@@ -16,13 +16,16 @@ class CalculationsController < ApplicationController
 
     words_array = @text.split
 
+    lowercase = @text.downcase
+    lowercase_array = lowercase.split
+
     @character_count_with_spaces = @text.length
 
     @character_count_without_spaces = string_no_newline.length
 
     @word_count = words_array.length
 
-    @occurrences = words_array.count(@special_word)
+    @occurrences = lowercase_array.count(@special_word)
 
     # ================================================================================
     # Your code goes above.
@@ -43,9 +46,10 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-     percent = @apr/100
+     rate = @apr/1200
+     months = @years*12
 
-    @monthly_payment = @principal * (percent) / (1-1/(1+(percent))**(@years * 12))
+    @monthly_payment = @principal *  (rate + (rate/(((1+rate)**months)-1)))
 
     # ================================================================================
     # Your code goes above.
@@ -123,15 +127,18 @@ class CalculationsController < ApplicationController
     @mean = @sum/@count
 
     var_sum = 0
-    for num in @numbers
-      var_sum += (num-@mean) ** 2
+    @numbers.each do |num|
+      var_sum += ((num-@mean) ** 2)
     end
 
-    @variance = var_sum/(@count-1)
+    @variance = var_sum/(@count)
 
     @standard_deviation = @variance ** 0.5
 
-    @mode = "Replace this string with your answer."
+
+    freq = @sorted_numbers.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+
+    @mode = @sorted_numbers.max_by { |v| freq[v] }
 
     # ================================================================================
     # Your code goes above.
