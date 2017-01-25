@@ -11,13 +11,26 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    string_no_space = @text.delete(" ")
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    string_no_newline = string_no_space.delete("\r\n")
 
-    @word_count = "Replace this string with your answer."
+    words_array = @text.split
 
-    @occurrences = "Replace this string with your answer."
+    count = 0
+
+    for i in words_array
+      if i == @special_word
+        count += 1
+    end
+
+    @character_count_with_spaces = @text.length
+
+    @character_count_without_spaces = string_no_newline.length
+
+    @word_count = words_array.length
+
+    @occurrences = count
 
     # ================================================================================
     # Your code goes above.
@@ -38,7 +51,9 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    percent = @apr/100
+
+    @monthly_payment = @principal * (percent) / (1-1/(1+(percent))**(@years * 12))
 
     # ================================================================================
     # Your code goes above.
@@ -60,12 +75,14 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    difference = @ending-@starting #i assume this is in seconds
+
+    @seconds = difference
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @weeks/52
 
     # ================================================================================
     # Your code goes above.
@@ -82,27 +99,63 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
 
-    @count = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @minimum = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @maximum = "Replace this string with your answer."
+    @minimum = sorted_numbers[0]
 
-    @range = "Replace this string with your answer."
+    @maximum = sorted_numbers[-1]
 
-    @median = "Replace this string with your answer."
+    @range = @maximum-@minimum
 
-    @sum = "Replace this string with your answer."
+    median_count = 0
+    temp_median = 0
+    if @numbers.odd?
+      median_count = (@numbers.length+1)/2
+      temp_median = @sorted_numbers[median_count]
+    else
+      median_count = (@numbers.length)/2
+      temp_median = (@sorted_numbers[median_count] + @sorted_numbers[median_count+1])/2
+    end
 
-    @mean = "Replace this string with your answer."
+    @median = temp_median
 
-    @variance = "Replace this string with your answer."
+    temp_sum = 0
+    for num in @numbers
+      temp_sum += num
+    end
 
-    @standard_deviation = "Replace this string with your answer."
+    @sum = temp_sum
 
-    @mode = "Replace this string with your answer."
+    @mean = @sum/@count
+
+    var_sum = 0
+    for num in @numbers
+      var_sum += (num-@mean) ** 2
+    end
+
+    @variance = var_sum/(@count-1)
+
+    @standard_deviation = @variance ** 0.5
+
+
+    latest_mode_and_frequency = [0, 0]
+    while @numbers.length > b[1]
+      num=@numbers[0]
+      count = 0
+      for i in @numbers
+        if num == i
+          count +=1
+      end
+
+      if count > b[1]
+        b = [@numbers[0], count]
+      @numbers.delete(@numbers[0])
+    end
+
+    @mode = latest_mode_and_frequency[0]
 
     # ================================================================================
     # Your code goes above.
