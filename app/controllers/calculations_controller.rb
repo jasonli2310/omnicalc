@@ -10,19 +10,11 @@ class CalculationsController < ApplicationController
     # The special word the user input is in the string @special_word.
     # ================================================================================
 
-
     string_no_space = @text.delete(" ")
 
     string_no_newline = string_no_space.delete("\r\n")
 
     words_array = @text.split
-
-    count = 0
-
-    for i in words_array
-      if i == @special_word
-        count += 1
-    end
 
     @character_count_with_spaces = @text.length
 
@@ -30,7 +22,7 @@ class CalculationsController < ApplicationController
 
     @word_count = words_array.length
 
-    @occurrences = count
+    @occurrences = words_array.count(@special_word)
 
     # ================================================================================
     # Your code goes above.
@@ -51,7 +43,7 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    percent = @apr/100
+     percent = @apr/100
 
     @monthly_payment = @principal * (percent) / (1-1/(1+(percent))**(@years * 12))
 
@@ -74,7 +66,6 @@ class CalculationsController < ApplicationController
     #   So if you subtract one time from another, you will get an integer
     #   number of seconds as a result.
     # ================================================================================
-
     difference = @ending-@starting #i assume this is in seconds
 
     @seconds = difference
@@ -99,25 +90,25 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-
     @sorted_numbers = @numbers.sort
 
     @count = @numbers.count
 
-    @minimum = sorted_numbers[0]
+    @minimum = @sorted_numbers[0]
 
-    @maximum = sorted_numbers[-1]
+    @maximum = @sorted_numbers[-1]
 
     @range = @maximum-@minimum
 
-    median_count = 0
-    temp_median = 0
-    if @numbers.odd?
-      median_count = (@numbers.length+1)/2
-      temp_median = @sorted_numbers[median_count]
-    else
-      median_count = (@numbers.length)/2
-      temp_median = (@sorted_numbers[median_count] + @sorted_numbers[median_count+1])/2
+
+    if @count % 2 == 0
+      index = (@count)/2
+      temp_median = (@sorted_numbers[index] + @sorted_numbers[index-1])/2
+    end
+
+    if @count % 2 == 1
+      index = (@count+1)/2
+      temp_median = @sorted_numbers[index-1]
     end
 
     @median = temp_median
@@ -140,22 +131,7 @@ class CalculationsController < ApplicationController
 
     @standard_deviation = @variance ** 0.5
 
-
-    latest_mode_and_frequency = [0, 0]
-    while @numbers.length > b[1]
-      num=@numbers[0]
-      count = 0
-      for i in @numbers
-        if num == i
-          count +=1
-      end
-
-      if count > b[1]
-        b = [@numbers[0], count]
-      @numbers.delete(@numbers[0])
-    end
-
-    @mode = latest_mode_and_frequency[0]
+    @mode = "Replace this string with your answer."
 
     # ================================================================================
     # Your code goes above.
